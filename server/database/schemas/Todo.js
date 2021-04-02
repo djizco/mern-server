@@ -9,11 +9,7 @@ const todoSchema = new Schema({
   completed: { type: Boolean, default: false },
   created_at: { type: Date, default: Date.now, immutable: true },
   updated_at: { type: Date },
-});
-
-todoSchema.methods.hide = function() {
-  return R.omit(['__v'], this.toObject());
-};
+}, { versionKey: false });
 
 const Todo = mongoose.model('Todo', todoSchema);
 
