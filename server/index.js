@@ -1,6 +1,8 @@
 const express      = require('express');
 const bodyParser   = require('body-parser');
 const cors         = require('cors');
+const https        = require('https');
+const fs           = require('fs');
 
 require('./environment');
 require('./database');
@@ -8,7 +10,12 @@ require('./database');
 const routes          = require('./routes');
 const configPassport  = require('./passport/passport-config');
 
-const port         = process.env.PORT;
+const key = fs.readFileSync(__dirname + '/etc/ssl/certs/selfsigned.key');
+const cert = fs.readFileSync(__dirname + '/etc/ssl/certs/selfsigned.crt');
+
+const credentials = { key, cert };
+
+const port         = 443;
 const origin       = process.env.ORIGIN;
 const app          = express();
 
@@ -22,4 +29,8 @@ configPassport(app, express);
 
 app.use('/', routes);
 
-app.listen(port, () => console.log(`Server is listening on port ${port}`));
+const server = https.createServer(credentials, app);
+
+server.listen(port, () => console.log(`HTTPS server is listening on port ${port}`);
+
+// app.listen(port, () => console.log(`Server is listening on port ${port}`));
