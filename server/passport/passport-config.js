@@ -15,6 +15,7 @@ module.exports = app => {
     }),
     genid: () => uuid.v4(),
     secret: process.env.SESSION_SECRET,
+    cookie: { domain: process.env.DOMAIN },
     resave: false,
     saveUninitialized: false,
   };
