@@ -6,7 +6,7 @@ require('./environment');
 require('./database');
 
 const routes          = require('./routes');
-const configPassport  = require('./passport/passport-config');
+const configPassport  = require('./passport/config');
 
 const port         = process.env.PORT;
 const origin       = process.env.ORIGIN;
