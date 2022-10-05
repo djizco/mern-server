@@ -5,8 +5,8 @@
   "main": "server/index.js",
   "scripts": {
     "start": "nodemon server/index.js",
-    "lint": "eslint server",
-    "lint:fix": "eslint server --fix",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
     "test": "./scripts/test.sh",
     "test:verbose": "./scripts/test-verbose.sh",
     "test:coverage": "./scripts/test-coverage.sh",
