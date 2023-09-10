@@ -38,7 +38,7 @@
   ],
   "homepage": "https://github.com/djizco/mern-server#readme",
   "engines": {
-    "node": ">=12.0.0"
+    "node": ">=16.0.0"
   },
   "dependencies": {
     "@typegoose/auto-increment": "^3.5.0",
