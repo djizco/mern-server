@@ -1,13 +1,15 @@
-const mongoose = require('mongoose');
 const { AutoIncrementID } = require('@typegoose/auto-increment');
 const bcrypt = require('bcryptjs');
+const mongoose = require('mongoose');
 const R = require('ramda');
 
 const { Schema } = mongoose;
 
 const userSchema = new Schema({
   user: Number,
-  username: { type: String, lowercase: true, required: true, unique: true, immutable: true },
+  username: {
+    type: String, lowercase: true, required: true, unique: true, immutable: true,
+  },
   username_case: { type: String, required: true },
   password: { type: String, required: true },
   profile_pic: { type: String },

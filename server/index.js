@@ -1,12 +1,12 @@
-const express      = require('express');
 const bodyParser   = require('body-parser');
 const cors         = require('cors');
+const express      = require('express');
 
 require('./environment');
 require('./database');
 
-const routes          = require('./routes');
 const configPassport  = require('./passport/config');
+const routes          = require('./routes');
 
 const port         = process.env.PORT;
 const origin       = process.env.ORIGIN;
