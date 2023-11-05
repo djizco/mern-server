@@ -1,24 +1,36 @@
 const { AutoIncrementID } = require('@typegoose/auto-increment');
 const bcrypt = require('bcryptjs');
 const mongoose = require('mongoose');
-const R = require('ramda');
 
 const { Schema } = mongoose;
 
 const userSchema = new Schema({
   user: Number,
   username: {
-    type: String, lowercase: true, required: true, unique: true, immutable: true,
+    type: String,
+    lowercase: true,
+    required: true,
+    unique: true,
+    immutable: true,
   },
-  username_case: { type: String, required: true },
+  usernameCase: { type: String, required: true },
   password: { type: String, required: true },
-  profile_pic: { type: String },
-  first_name: { type: String, maxlength: 20 },
-  last_name: { type: String, maxlength: 20 },
+  profilePic: { type: String },
+  firstName: { type: String, maxlength: 20 },
+  lastName: { type: String, maxlength: 20 },
   bio: { type: String, maxlength: 240 },
-  created_at: { type: Date, default: Date.now, immutable: true },
-  updated_at: { type: Date },
+  createdAt: { type: Date, default: Date.now, immutable: true },
+  updatedAt: { type: Date },
 }, { versionKey: false });
+
+userSchema.set('toJSON', {
+  transform: (doc, ret) => {
+    ret.id = ret._id;
+    delete ret._id;
+    delete ret.__v;
+    delete ret.password;
+  },
+});
 
 userSchema.plugin(AutoIncrementID, {
   field: 'user',
@@ -28,21 +40,21 @@ userSchema.plugin(AutoIncrementID, {
   trackerModelName: 'User',
 });
 
-userSchema.virtual('full_name').get(function() {
-  if (this.first_name && this.last_name) {
-    return `${this.first_name} ${this.last_name}`;
+userSchema.virtual('fullName').get(function() {
+  if (this.firstName && this.lastName) {
+    return `${this.firstName} ${this.lastName}`;
   }
-  if (this.first_name && !this.last_name) {
-    return this.first_name;
+  if (this.firstName && !this.lastName) {
+    return this.firstName;
   }
-  if (!this.first_name && this.last_name) {
-    return this.last_name;
+  if (!this.firstName && this.lastName) {
+    return this.lastName;
   }
   return undefined;
 });
 
 userSchema.virtual('initials').get(function() {
-  return this.first_name && this.last_name && `${this.first_name[0].concat(this.last_name[0]).toUpperCase()}`;
+  return this.firstName && this.lastName && `${this.firstName[0].concat(this.lastName[0]).toUpperCase()}`;
 });
 
 userSchema.methods.validPassword = function(password) {
@@ -60,10 +72,6 @@ userSchema.methods.hashPassword = function() {
       });
     });
   });
-};
-
-userSchema.methods.hidePassword = function() {
-  return R.omit(['password', '_id'], this.toObject({ virtuals: true }));
 };
 
 const User = mongoose.model('User', userSchema);

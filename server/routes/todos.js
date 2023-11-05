@@ -9,7 +9,7 @@ const router   = express.Router();
 module.exports = router;
 
 router.get('/', requireAuth, (req, res) => {
-  Todo.find({ user: req.user.id }, { __v: 0, user: 0 })
+  Todo.find({ user: req.user.id }, { user: 0 })
     .then(todos => {
       res.send({ message: 'Todos retrieved successfully', todos });
     })
@@ -33,7 +33,7 @@ router.post('/', requireAuth, (req, res) => {
 });
 
 router.put('/complete', requireAuth, (req, res) => {
-  Todo.findById(req.body.id, { __v: 0, user: 0 })
+  Todo.findById(req.body.id, { user: 0 })
     .then(todo => {
       todo.completed = !todo.completed;
 
@@ -51,10 +51,10 @@ router.put('/complete', requireAuth, (req, res) => {
 });
 
 router.put('/', requireAuth, (req, res) => {
-  Todo.findById(req.body.id, { __v: 0, user: 0 })
+  Todo.findById(req.body.id, { user: 0 })
     .then(todo => {
       todo.text = req.body.text;
-      todo.updated_at = Date.now();
+      todo.updatedAt = Date.now();
 
       todo.save()
         .then(savedTodo => {
